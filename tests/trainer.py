@@ -228,11 +228,11 @@ dataset_val.load_shapes(50, config.IMAGE_SHAPE[0], config.IMAGE_SHAPE[1])
 dataset_val.prepare()
 
 # Load and display random samples
-image_ids = np.random.choice(dataset_train.image_ids, 4)
-for image_id in image_ids:
-    image = dataset_train.load_image(image_id)
-    mask, class_ids = dataset_train.load_mask(image_id)
-    visualize.display_top_masks(image, mask, class_ids, dataset_train.class_names)
+# image_ids = np.random.choice(dataset_train.image_ids, 4)
+# for image_id in image_ids:
+#     image = dataset_train.load_image(image_id)
+#     mask, class_ids = dataset_train.load_mask(image_id)
+    # visualize.display_top_masks(image, mask, class_ids, dataset_train.class_names)
 
 # Create model in training mode
 model = modellib.MaskRCNN(mode="training", config=config,
