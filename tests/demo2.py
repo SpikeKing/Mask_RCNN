@@ -7,6 +7,11 @@ Created by C. L. Wang on 2018/6/13
 
 # Load COCO dataset
 import os
+import sys
+
+p = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if p not in sys.path:
+    sys.path.append(p)
 
 from root_dir import ROOT_DIR
 from samples.coco.coco import CocoDataset

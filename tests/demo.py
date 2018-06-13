@@ -9,12 +9,15 @@ import os
 import random
 import sys
 
+p = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if p not in sys.path:
+    sys.path.append(p)
+
 import skimage.io
 
 from root_dir import ROOT_DIR  # 根目录
 
 from samples.coco.coco import CocoConfig  # Coco配置目录，Microsoft的Common Object in Context
-from samples.coco.coco import CocoDataset
 
 from mrcnn import utils
 import mrcnn.model as modellib
@@ -72,5 +75,3 @@ results = model.detect([image], verbose=1)  # 执行检测逻辑
 r = results[0]
 visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
                             class_names, r['scores'])  # 数据的可视化
-
-
