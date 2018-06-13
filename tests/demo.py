@@ -11,50 +11,38 @@ import sys
 
 import skimage.io
 
-# Root directory of the project
-from samples.coco.coco import CocoConfig
+from root_dir import ROOT_DIR  # 根目录
 
-ROOT_DIR = os.path.abspath("../")
+from samples.coco.coco import CocoConfig  # Coco配置目录，Microsoft的Common Object in Context
+from samples.coco.coco import CocoDataset
 
-# Import Mask RCNN
-sys.path.append(ROOT_DIR)  # To find local version of the library
 from mrcnn import utils
 import mrcnn.model as modellib
 from mrcnn import visualize
 
-# Import COCO config
-sys.path.append(os.path.join(ROOT_DIR, "samples/coco/"))  # To find local version
-# import coco
+MODEL_DIR = os.path.join(ROOT_DIR, "logs")  # 日志信息和已训练的模型
+COCO_DIR = os.path.join(ROOT_DIR, 'coco')
 
+COCO_MODEL_PATH = os.path.join(ROOT_DIR, 'models', "mask_rcnn_coco.h5")  # CoCo的模型
 
-# Directory to save logs and trained model
-MODEL_DIR = os.path.join(ROOT_DIR, "logs")
-
-# Local path to trained weights file
-COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
-# Download COCO trained weights from Releases if needed
-if not os.path.exists(COCO_MODEL_PATH):
+if not os.path.exists(COCO_MODEL_PATH):  # 不存在则下载
     utils.download_trained_weights(COCO_MODEL_PATH)
 
-# Directory of images to run detection on
-IMAGE_DIR = os.path.join(ROOT_DIR, "images")
+IMAGE_DIR = os.path.join(ROOT_DIR, "images")  # 图片文件夹
 
 
 class InferenceConfig(CocoConfig):
     # Set batch size to 1 since we'll be running inference on
     # one image at a time. Batch size = GPU_COUNT * IMAGES_PER_GPU
-    GPU_COUNT = 1
-    IMAGES_PER_GPU = 1
+    GPU_COUNT = 1  # GPU的数量
+    IMAGES_PER_GPU = 1  # 每个GPU的图片
 
 
 config = InferenceConfig()
-config.display()
+config.display()  # 输出配置
 
-# Create model object in inference mode.
-model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
-
-# Load weights trained on MS-COCO
-model.load_weights(COCO_MODEL_PATH, by_name=True)
+model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)  # 创建推导的模型
+model.load_weights(COCO_MODEL_PATH, by_name=True)  # 加载MS-COCO的参数
 
 # COCO Class names
 # Index of the class in the list is its ID. For example, to get ID of
@@ -75,14 +63,14 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
                'teddy bear', 'hair drier', 'toothbrush']
 
-# Load a random image from the images folder
-file_names = next(os.walk(IMAGE_DIR))[2]
-image = skimage.io.imread(os.path.join(IMAGE_DIR, random.choice(file_names)))
+file_names = next(os.walk(IMAGE_DIR))[2]  # 获取图片的文件名
+image = skimage.io.imread(os.path.join(IMAGE_DIR, random.choice(file_names)))  # 随机选择图片
 
-# Run detection
-results = model.detect([image], verbose=1)
+results = model.detect([image], verbose=1)  # 执行检测逻辑
 
 # Visualize results
 r = results[0]
 visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
-                            class_names, r['scores'])
+                            class_names, r['scores'])  # 数据的可视化
+
+
