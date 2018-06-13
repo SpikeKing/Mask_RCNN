@@ -19,7 +19,7 @@ from samples.coco.coco import CocoDataset
 COCO_DIR = os.path.join(ROOT_DIR, 'coco')
 
 dataset = CocoDataset()
-dataset.load_coco(COCO_DIR, "train", dataYear="2017", auto_download=True)
+dataset.load_coco(COCO_DIR, "train", year="2017", auto_download=True)
 dataset.prepare()
 
 # Print class names
